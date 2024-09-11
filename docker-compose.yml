@@ -1,0 +1,22 @@
+services:
+  spring:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://pg_db:5432/cocolabhub
+      SPRING_DATASOURCE_USERNAME: cocolabhub
+      SPRING_DATASOURCE_PASSWORD: cocolabhub
+    depends_on:
+      - pg_db
+
+  pg_db:
+    image: postgres:16.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cocolabhub
+      POSTGRES_USER: cocolabhub
+      POSTGRES_PASSWORD: cocolabhub
