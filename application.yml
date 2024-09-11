@@ -1,0 +1,90 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  devtools:
+    livereload:
+      enabled: true
+  application:
+    name: home
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/cocolabhub
+    username: cocolabhub
+    password: cocolabhub
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        # jpa camelCase
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    # script 파일이 hibernate 초기화 이후 동작하게 하기 위한 옵션
+    defer-datasource-initialization: true
+  mvc:
+    # WebMvcConfig 에 있는 ** 정규식 패턴 사용하기 위함
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-name: google
+            client-id: ${clientId}
+            client-secret: ${clientSecret}
+            redirect-uri: http://localhost:8080/api/login/oauth2/code/google
+            authorization-grant-type: authorization_code
+            scope:
+              - profile
+              - email
+          naver:
+            client-name: naver
+            client-id: ${clientId}
+            client-secret: ${clientSecret}
+            redirect-uri: http://localhost:8080/api/login/oauth2/code/naver
+            authorization-grant-type: authorization_code
+            scope:
+              - name
+              - email
+          kakao:
+            client-name: kakao
+            client-id: ${clientId}
+            client-secret: ${clientSecret}
+            client-authentication-method: client_secret_post
+            redirect-uri: http://localhost:8080/api/login/oauth2/code/kakao
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+server:
+  port: ${SPRING_BOOT_PORT:8080} # .env 파일 없으면 8080포트에서 실행
+
+client:
+  url: ${FRONTEND_DEV_HOST:http://localhost:8083}
+
+jwt:
+  secret: 70b9e0c0f994eb1b427ed0d6c2174a6852e181507eac67d811d645df2780d3d0cc1f2829a21c8865fb3410f8b33a8ce2a188ea8d5668051ebc841cf21c70c6fb
+  token-validity-in-seconds: 1209600 # 14일
+  domain: localhost # 쿠키 저장 domain
+
+cloud:
+  aws:
+    s3:
+      bucket: ${bucket 이름}
+    stack.auto: false
+    region.static: ${region}
+    credentials:
+      accessKey: ${accessKey}
+      secretKey: ${secretKey}
