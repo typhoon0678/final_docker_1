@@ -10,7 +10,8 @@ services:
       SPRING_DATASOURCE_USERNAME: cocolabhub
       SPRING_DATASOURCE_PASSWORD: cocolabhub
     depends_on:
-      - pg_db
+      pg_db:
+        condition: service_healthy
 
   pg_db:
     image: postgres:16.3
@@ -20,3 +21,8 @@ services:
       POSTGRES_DB: cocolabhub
       POSTGRES_USER: cocolabhub
       POSTGRES_PASSWORD: cocolabhub
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cocolabhub -d cocolabhub"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
