@@ -1,0 +1,8 @@
+{
+  "build": {
+    "hostname": ""
+  },
+  "dev": {
+    "hostname": "http://localhost:8000"
+  }
+}
