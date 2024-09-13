@@ -19,6 +19,7 @@ RUN rm -rf .git
 # .env, application.yml 복사
 COPY ./.env ./
 COPY ./application.yml ./src/main/resources/
+COPY ./config.json ./frontend/src/config/
 
 # npm install 및 리엑트 빌드파일 생성
 WORKDIR /apps/jhta2402_final/frontend
